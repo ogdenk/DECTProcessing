@@ -1,7 +1,5 @@
 # Program to auto-populate matrix of data spreadsheets and identify data with separate key matrix
 
-#test
-
 import os
 
 import numpy as np
