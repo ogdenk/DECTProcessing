@@ -4,29 +4,29 @@ import os
 import numpy as np
 import pandas as pd
 import h5py
-h5py.run_tests()
+import matplotlib.pyplot as plt
 
-## test
+h5py.run_tests()
 
 from sklearn.utils import shuffle
 from keras import models
 from keras import layers
-import matplotlib.pyplot as plt
+
 
 
 pathName = "X:\Research\DECT BMD Study"
 
-slices = 4  #slices set as 1 for seizure study.  use 2 for no data augmentation tumors. 4 for data augmentation tumors
+slices = 4  # slices set as 1 for seizure study.  use 2 for no data augmentation tumors. 4 for data augmentation tumors
 
 rootDir = 'c:/temp'
-#filename = 'rawavg_nogad1.5.csv'
-#filename = 'dataSetGBM2noADC.csv'
-#filename = 'dataSetEmb2.4.19noDataAugFeatureAvg.csv' # 1 x 4
-#filename = 'dataSetEmb2.4.19noDataAug.csv' # 1 x 16,
-#filename = 'dataSetEmb2.4.19noDataAugFeatureAvg.csv' # 1 x 16
+# filename = 'rawavg_nogad1.5.csv'
+# filename = 'dataSetGBM2noADC.csv'
+# filename = 'dataSetEmb2.4.19noDataAugFeatureAvg.csv' # 1 x 4
+# filename = 'dataSetEmb2.4.19noDataAug.csv' # 1 x 16,
+# filename = 'dataSetEmb2.4.19noDataAugFeatureAvg.csv' # 1 x 16
 filename='dataSetEmb1.30.19.csv'
-#filename='dataSetEmb2.12.19noDataAug1.csv'
-#filename = 'dataSetEmb1.30.19.csv' # Fully augmented
+# filename='dataSetEmb2.12.19noDataAug1.csv'
+# filename = 'dataSetEmb1.30.19.csv' # Fully augmented
 
 datafile = os.path.join(rootDir, filename)
 pre_data = pd.read_csv(datafile,index_col='Patient_Number')
