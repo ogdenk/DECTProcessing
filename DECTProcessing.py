@@ -3,74 +3,24 @@
 import os
 import numpy as np
 import pandas as pd
-import h5py
 import matplotlib.pyplot as plt
 
-h5py.run_tests()
 
 from sklearn.utils import shuffle
 from keras import models
 from keras import layers
 
+pathName = "/home/kent/LSpineDECT/"
 
+filename = 'Low_Energy_Data.csv'
 
-pathName = "X:\Research\DECT BMD Study"
-
-slices = 4  # slices set as 1 for seizure study.  use 2 for no data augmentation tumors. 4 for data augmentation tumors
-
-rootDir = 'c:/temp'
-# filename = 'rawavg_nogad1.5.csv'
-# filename = 'dataSetGBM2noADC.csv'
-# filename = 'dataSetEmb2.4.19noDataAugFeatureAvg.csv' # 1 x 4
-# filename = 'dataSetEmb2.4.19noDataAug.csv' # 1 x 16,
-# filename = 'dataSetEmb2.4.19noDataAugFeatureAvg.csv' # 1 x 16
-filename='dataSetEmb1.30.19.csv'
-# filename='dataSetEmb2.12.19noDataAug1.csv'
-# filename = 'dataSetEmb1.30.19.csv' # Fully augmented
-
-datafile = os.path.join(rootDir, filename)
-pre_data = pd.read_csv(datafile,index_col='Patient_Number')
-
-#########################################################################################################
-
-#f = h5py.File('d:/dect/myfile.hdf5')
+datafile = os.path.join(pathName, filename)
+pre_data = pd.read_csv(datafile,index_col='Feature_Name')
 
 listOfFiles = list()
 listOfPAT = list()
 filenamexlsx = list()
 filenamexlsxread = 0
-
-# use os.walk() to walk through directory and grab files that we're interested in
-for root, dirs, files in os.walk(pathName, topdown=True):
-    filenamexlsx = [file for file in files if file.endswith('.xlsx')]
-
-    # First read in the xlsx data file and save to hdf5 file
-    if filenamexlsx != []:
-        if filenamexlsxread == 0:
-            filenamexlsxread = 1
-            xlFile = root + "/" + filenamexlsx[0]
-            xldata = pd.read_excel(xlFile, sheet_name='Sheet1')
-
-         # write data from xlsx to the output file
-    #directories = [d for d in dirs if d.startswith('DECT')]  # only look in folders that start with dect
-    filename = [file for file in files if file.endswith('.dcm')]  # only grab .dcm files (all we need)
-
-    patient = root
-    patient = patient[-6:]
-
-    length = len(filename)
-    count = 0
-    while count < length:
-        outputfilename = patient + "-" + str(filename[count])[-8:]
-        count = count+1
-
-    listOfFiles += [os.path.join(root, filename) for filename in files]
-
-# remove pathName and filename from root list, this gives us a list of patient names with one per file
-
-print("Done!")
-###########################################################################################################################
-
 
 
 
