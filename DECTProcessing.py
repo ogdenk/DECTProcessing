@@ -17,10 +17,10 @@ filename = 'Low_Energy_Data.csv'
 datafile = os.path.join(pathName, filename)
 pre_data = pd.read_csv(datafile,index_col='Feature_Name')
 
-listOfFiles = list()
-listOfPAT = list()
-filenamexlsx = list()
-filenamexlsxread = 0
+#listOfFiles = list()
+#listOfPAT = list()
+#filenamexlsx = list()
+#filenamexlsxread = 0
 
 total_rows=len(pre_data.axes[0])
 total_columns=len(pre_data.axes[1])
@@ -48,8 +48,8 @@ for i in range(int(number_of_patients)):
     arr_size = train_data_df.shape
     arr2_size = test_data_df.shape
 
-    train_data = copy.deepcopy(train_data_df[:,2:])
-    test_data = copy.deepcopy(test_data_df[:,2:])
+    train_data = copy.deepcopy(train_data_df.iloc[:,1:])
+    test_data = copy.deepcopy(test_data_df.iloc[:,1:])
 
     means = train_data.mean(axis=0)
     sigmas = train_data.std(axis=0)
