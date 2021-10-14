@@ -4,14 +4,14 @@ import os
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-
+import copy
 
 from sklearn.utils import shuffle
 from keras import models
 from keras import layers
 
-pathName = "/home/kent/LSpineDECT/"
-
+# pathName = "/home/kent/LSpineDECT/"
+pathName = "c:/temp"
 filename = 'Low_Energy_Data.csv'
 
 datafile = os.path.join(pathName, filename)
@@ -22,44 +22,34 @@ listOfPAT = list()
 filenamexlsx = list()
 filenamexlsxread = 0
 
-
-
 total_rows=len(pre_data.axes[0])
 total_columns=len(pre_data.axes[1])
-len_group = slices**slices
-number_of_patients = total_rows/len_group
-valFrac = 1-(number_of_patients-1)/number_of_patients #Training fraction all but one patient
-trainFrac = 1-valFrac #Validation one patient
+# len_group = slices**slices
+number_of_patients = total_rows  # /len_group
+valFrac = 1.0 - (number_of_patients - 1.0)/number_of_patients #validation fraction one patient
+trainFrac = 1-valFrac #Training on all but one
 total_Val_Acc = []
 total_Val_Loss = []
 test_patients = []
 for i in range(int(number_of_patients)):
-    #last256_cycle_data = pre_data.as_matrix()[(total_rows-len_group):,:]
-
-    #index_list = np.array(pre_data.index)
-    #np.reshape(index_list, (-1, len_group))
     data=pre_data
-
-    #data2=pd.DataFrame(data,index=index_list)
-    #data3=data.loc['Tumor Type', 'Patient Number']
-    #data = data.loc[index_list, :]
-    #data = shuffle(pre_data)
-    testRows = slices**slices
-    #testRows = int(valFrac*data.shape[0]+1)  #add 1 due to computer rounding error in some data sets.  make sure its 256 if this is happening
+    testRows = 10  # use 10 rows of data for testing
 
     test_data_df, train_data_df = np.split(data,[testRows])
 
     train_data_size = len(train_data_df)
     test_data_size = len(test_data_df)
 
-    train_labels = train_data_df['Tumor_Type'].as_matrix().astype('float32')
-    test_labels = test_data_df['Tumor_Type'].as_matrix().astype('float32')
-    #train_labels = train_data_df['SzBd400'].as_matrix().astype('float32')
-    #test_labels = test_data_df['SzBd400'].as_matrix().astype('float32')
+    train_labels = copy.deepcopy(train_data_df['BMD'].astype('float32'))
+    test_labels = copy.deepcopy(test_data_df['BMD'].astype('float32'))
 
-    train_data = train_data_df.as_matrix()[:,3:]
-    test_data = test_data_df.as_matrix()[:,3:]
+    arr_size = train_data_df.size
+    arr2_size = test_data_df.size
+    arr_size = train_data_df.shape
+    arr2_size = test_data_df.shape
 
+    train_data = copy.deepcopy(train_data_df[:,2:])
+    test_data = copy.deepcopy(test_data_df[:,2:])
 
     means = train_data.mean(axis=0)
     sigmas = train_data.std(axis=0)
