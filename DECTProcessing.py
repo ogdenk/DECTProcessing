@@ -32,24 +32,24 @@ total_Val_Acc = []
 total_Val_Loss = []
 test_patients = []
 for i in range(int(number_of_patients)):
-    data=pre_data
-    testRows = 10  # use 10 rows of data for testing
+    data=pre_data   #  Keep original data in pre_data
+    vertebrae = data.index  #  names of vertebral bodies
 
-    test_data_df, train_data_df = np.split(data,[testRows])
+    testRow = data.iloc[i,:]  # test case i
+    #testRow = testRow.transpose()  #  Doesn't seem to work?
 
-    train_data_size = len(train_data_df)
-    test_data_size = len(test_data_df)
+    data = data.drop([data.index[i]])  #  remove the vertebral body being tested
 
-    train_labels = copy.deepcopy(train_data_df['BMD'].astype('float32'))
-    test_labels = copy.deepcopy(test_data_df['BMD'].astype('float32'))
+    #test_data_df, train_data_df = np.split(data,[testRow])
 
-    arr_size = train_data_df.size
-    arr2_size = test_data_df.size
-    arr_size = train_data_df.shape
-    arr2_size = test_data_df.shape
+    train_data_size = len(data)
+    test_data_size = len(testRow)
 
-    train_data = copy.deepcopy(train_data_df.iloc[:,1:])
-    test_data = copy.deepcopy(test_data_df.iloc[:,1:])
+    train_labels = copy.deepcopy(data['BMD'].astype('float32'))
+    test_labels = copy.deepcopy(testRow['BMD'].astype('float32'))
+
+    train_data = copy.deepcopy(data.iloc[:,:])
+    test_data = copy.deepcopy(testRow.iloc[:])
 
     means = train_data.mean(axis=0)
     sigmas = train_data.std(axis=0)
