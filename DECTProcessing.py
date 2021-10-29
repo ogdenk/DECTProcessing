@@ -27,23 +27,23 @@ for i in range(int(number_of_patients)):
     data_df = pre_data   # Keep original data in pre_data
     vertebrae = data_df.index  # names of vertebral bodies
 
-    testRow_df[1, :] = data_df.iloc[i, :]  # test case i
+    testRow_df = data_df.iloc[[i]]  # test case i  Use double brackets to get a row back
     shape = testRow_df.shape
 
     data_df = data_df.drop([data_df.index[i]])  # remove the vertebral body being tested
 
     # test_data_df, train_data_df = np.split(data,[testRow])
     train_data_df = copy.deepcopy(data_df.iloc[:, :])  # Same as data_df
-    test_data_df[0, :] = copy.deepcopy(testRow_df.iloc[:])  # Same as testRow_df
+    test_data_df = copy.deepcopy(testRow_df.iloc[:])  # Same as testRow_df
 
     train_data = train_data_df.to_numpy()[:, 1:]  # Convert to numpy arrays, drop BMD values
-    test_data[0, :] = test_data_df.to_numpy()[1:]
+    test_data = test_data_df.to_numpy()[:, 1:]
 
     train_data_size = len(train_data)  # How big are these arrays?
     test_data_size = len(test_data)
 
     train_labels = copy.deepcopy(data_df['BMD'].to_numpy())
-    test_labels = copy.deepcopy(test_data_df[0])
+    test_labels = copy.deepcopy(test_data_df['BMD'].to_numpy())
 
     means = train_data.mean(axis=0)
     sigmas = train_data.std(axis=0)
@@ -71,9 +71,9 @@ for i in range(int(number_of_patients)):
     epochs = range(1, len(loss_values) + 1)
 
 
-    acc_values = history_dict['acc']
-    val_acc_values = history_dict['val_acc']
-    acc_values = history_dict['acc']
+    acc_values = history_dict['accuracy']
+    val_acc_values = history_dict['val_accuracy']
+    acc_values = history_dict['accuracy']
     last_val_acc_value = val_acc_values[-1]
     last_val_loss_value = val_loss_values[-1]
     print(test_data_df.index[0])
