@@ -18,8 +18,8 @@ total_rows=len(pre_data.axes[0])
 total_columns=len(pre_data.axes[1])
 len_group = 1  # slices**slices
 number_of_patients = total_rows/len_group
-valFrac = 1.0 - (number_of_patients - 1.0)/number_of_patients #validation fraction one patient
-trainFrac = 1-valFrac #Training on all but one
+valFrac = 1.0 - (number_of_patients - 1.0)/number_of_patients # validation fraction one patient
+trainFrac = 1-valFrac # Training on all but one
 total_Val_Acc = []
 total_Val_Loss = []
 test_patients = []
@@ -27,7 +27,8 @@ for i in range(int(number_of_patients)):
     data_df = pre_data   # Keep original data in pre_data
     vertebrae = data_df.index  # names of vertebral bodies
 
-    testRow_df = data_df.iloc[[i]]  # test case i  Use double brackets to get a row back
+    #         Same as df.iloc[[i],:]
+    testRow_df = data_df.iloc[[i]]  # test case i.  Use double brackets to get a row back
     shape = testRow_df.shape
 
     data_df = data_df.drop([data_df.index[i]])  # remove the vertebral body being tested
@@ -60,18 +61,16 @@ for i in range(int(number_of_patients)):
     model.add(layers.Dense(8, activation='relu', input_shape=(train_data.shape[1],)))
     model.add(layers.Dropout(0.5))
     model.add(layers.Dense(8, activation='relu'))
-    #model.add(layers.Dropout(0.5))
-    model.add(layers.Dense(1, activation='sigmoid'))
+    # model.add(layers.Dropout(0.5))
+    model.add(layers.Dense(1, activation='linear'))
     model.compile(optimizer='adam',loss='binary_crossentropy',metrics=['accuracy'])
 
-    history = model.fit(train_data, train_labels, epochs=20, batch_size=2000, validation_data=(test_data, test_labels))
+    history = model.fit(train_data, train_labels, epochs=5, batch_size=15, validation_data=(test_data, test_labels))
     history_dict = history.history
     loss_values = history_dict['loss']
     val_loss_values = history_dict['val_loss']
     epochs = range(1, len(loss_values) + 1)
 
-
-    acc_values = history_dict['accuracy']
     val_acc_values = history_dict['val_accuracy']
     acc_values = history_dict['accuracy']
     last_val_acc_value = val_acc_values[-1]
