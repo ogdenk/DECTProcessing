@@ -7,8 +7,8 @@ import copy
 from keras import models
 from keras import layers
 
-pathName = "/home/kent/LSpineDECT/"
-# pathName = "c:/temp"
+#pathName = "/home/kent/LSpineDECT/"
+pathName = "c:/temp"
 filename = 'Low_Energy_Data.csv'
 
 datafile = os.path.join(pathName, filename)
@@ -28,7 +28,7 @@ for i in range(int(number_of_patients)):
     vertebrae = data_df.index  # names of vertebral bodies
 
     #         Same as df.iloc[[i],:]
-    testRow_df = data_df.iloc[[i]]  # test case i.  Use double brackets to get a row back
+    testRow_df = data_df.iloc[[i]]  # test case i  Use double brackets to get a row back
     shape = testRow_df.shape
 
     data_df = data_df.drop([data_df.index[i]])  # remove the vertebral body being tested
@@ -71,6 +71,8 @@ for i in range(int(number_of_patients)):
     val_loss_values = history_dict['val_loss']
     epochs = range(1, len(loss_values) + 1)
 
+
+    acc_values = history_dict['accuracy']
     val_acc_values = history_dict['val_accuracy']
     acc_values = history_dict['accuracy']
     last_val_acc_value = val_acc_values[-1]
