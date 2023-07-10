@@ -23,6 +23,11 @@ trainFrac = 1-valFrac # Training on all but one
 total_Val_Acc = []
 total_Val_Loss = []
 test_patients = []
+
+predictions = [0 for x in range(int(number_of_patients))]
+true_values = [0 for x in range(int(number_of_patients))]
+
+
 for i in range(int(number_of_patients)):
     data_df = pre_data   # Keep original data in pre_data
     vertebrae = data_df.index  # names of vertebral bodies
@@ -59,16 +64,20 @@ for i in range(int(number_of_patients)):
 
     model = models.Sequential()
     model.add(layers.Dense(8, activation='relu', input_shape=(train_data.shape[1],)))
-    model.add(layers.Dropout(0.5))
+    model.add(layers.Dropout(0.2))
     model.add(layers.Dense(8, activation='relu'))
-    # model.add(layers.Dropout(0.5))
+    model.add(layers.Dropout(0.1))
     model.add(layers.Dense(1, activation='linear'))
+
     model.compile(optimizer='adam',loss='binary_crossentropy',metrics=['mean_squared_error'])
-    history = model.fit(train_data, train_labels, epochs=10, batch_size=5, shuffle=True, validation_split=0.1)  #validation_data=(test_data, test_labels))
+    history = model.fit(train_data, train_labels, epochs=10, batch_size=10, shuffle=True, validation_split=0.1)  #validation_data=(test_data, test_labels))
 
     prediction = model.predict(np.array(test_data))
     print("Prediction = ", prediction)
     print("True value = ", test_labels)
+
+    predictions[i] = prediction
+    true_values[i] = test_labels
 
     #outputs = [layer.output for layer in model.layers]
     # outputVal = model.layers[len(model.layers)].output
@@ -77,6 +86,13 @@ for i in range(int(number_of_patients)):
     loss_values = history_dict['loss']
     val_loss_values = history_dict['val_loss']
     epochs = range(1, len(loss_values) + 1)
+
+print("True, Predicted")
+for i in range(int(number_of_patients)):
+    t = str(true_values[i])
+    p = str(predictions[i])
+    print(t,", ",p)
+
 
     #val_acc_values = history_dict['val_accuracy']
     #acc_values = history_dict['accuracy']
