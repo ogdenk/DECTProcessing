@@ -94,6 +94,7 @@ for i in range(int(number_of_patients)):
     print(t,", ",p)
 
 
+
     #val_acc_values = history_dict['val_accuracy']
     #acc_values = history_dict['accuracy']
     #last_val_acc_value = val_acc_values[-1]
